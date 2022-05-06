@@ -19,20 +19,23 @@ def rand_board(width, height):
 
 
 def render(board):
-    for i in range(len(board[0])+1):
+    print(" ", end="")
+    for i in range(len(board[0])):
         print("-", end="")
 
     print("")
 
     for x in range(len(board)):
+        print("|", end="")
         for y in range(len(board[0])):
             if board[x][y] == 0:
                 print(" ", end="")
             else:
                 print("#", end="")
-        print("")
+        print("|")
 
-    for j in range(len(board[0])+1):
+    print(" ",end="")
+    for j in range(len(board[0])):
         print("-", end="")
 
 
