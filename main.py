@@ -1,3 +1,6 @@
+import random
+
+
 def dead_board(width, height):
     empty = []
     for i in range(height):
@@ -7,11 +10,19 @@ def dead_board(width, height):
     return empty
 
 
+def rand_board(width, height):
+    rand = dead_board(width, height)
+    for i in range(height):
+        for j in range(width):
+            rand[i][j] = random.randint(0, 1)
+    return rand
+
+
 def main():
-    width = 5
+    width = 6
     height = 5
-    dead = dead_board(width, height)
-    print(dead)
+    rand = rand_board(width, height)
+    print(rand)
 
 
 if __name__ == '__main__':
