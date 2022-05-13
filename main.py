@@ -118,8 +118,6 @@ def next_board_state(board):
                 board[i][j] = 1
 
 
-
-
 def main():
     width = 5
     height = 5
