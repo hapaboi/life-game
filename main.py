@@ -9,7 +9,7 @@ def board_height(board):
     return len(board)
 
 
-def dead_board(width, height):
+def dead_board(height, width):
     empty = []
     for i in range(height):
         empty.append([])
@@ -22,7 +22,7 @@ def set_board(board, x, y):
     board[x][y] = 1
 
 
-def rand_board(width, height):
+def rand_board(height, width):
     rand = dead_board(width, height)
     for i in range(height):
         for j in range(width):
@@ -52,39 +52,45 @@ def render(board):
 
 
 def next_board_state(board):
+    counter_board = dead_board(board_width(board), board_height(board))
     counter = 0
     for i in range(board_height(board)):
         for j in range(board_width(board)):
-            # Covers all i - 1 neighbors
-            if 0 <= i - 1 < 5:
-                if board[i - 1][j] == 1:
-                    counter += 1
-                if 0 <= j - 1 < 5:
-                    if board[i - 1][j - 1] == 1:
+            if board[i][j] == 1:
+                # Covers all i - 1 neighbors
+                if 0 <= i - 1 < board_height(board):
+                    if board[i - 1][j] == 1:
                         counter += 1
-                if 0 <= j + 1 < 5:
-                    if board[i - 1][j + 1] == 1:
+                    if 0 <= j - 1 < board_width(board):
+                        if board[i - 1][j - 1] == 1:
+                            counter += 1
+                    if 0 <= j + 1 < board_width(board):
+                        if board[i - 1][j + 1] == 1:
+                            counter += 1
+
+                # Covers all i neighbors
+                if 0 <= j - 1 < board_width(board):
+                    if board[i][j - 1] == 1:
+                        counter += 1
+                if 0 <= j + 1 < board_width(board):
+                    if board[i][j + 1] == 1:
                         counter += 1
 
-            # Covers all i neighbors
-            if 0 <= j - 1 < 5:
-                if board[i][j - 1] == 1:
-                    counter += 1
-            if 0 <= j + 1 < 5:
-                if board[i][j + 1] == 1:
-                    counter += 1
+                # Covers all i + 1 neighbors
+                if 0 <= i + 1 < board_height(board):
+                    if board[i + 1][j] == 1:
+                        counter += 1
+                    if 0 <= j - 1 < board_width(board):
+                        if board[i + 1][j - 1] == 1:
+                            counter += 1
+                    if 0 <= j + 1 < board_width(board):
+                        if board[i + 1][j + 1] == 1:
+                            counter += 1
 
-            # Covers all i + 1 neighbors
-            if 0 <= i + 1 < 5:
-                if board[i + 1][j] == 1:
-                    counter += 1
-                if 0 <= j - 1 < 5:
-                    if board[i + 1][j - 1] == 1:
-                        counter += 1
-                if 0 <= j + 1 < 5:
-                    if board[i + 1][j + 1] == 1:
-                        counter += 1
-    print(counter)
+                counter_board[i][j] = counter
+                counter = 0
+
+    return counter_board
 
     # board[i - 1][j - 1]
     # board[i - 1][j]
@@ -102,11 +108,13 @@ def main():
     width = 5
     height = 5
     # rand = rand_board(width, height)
-    rand = dead_board(width, height)
+    rand = dead_board(height, width)
     set_board(rand, 2, 2)
-    print(rand)
+    set_board(rand, 0, 0)
+    set_board(rand, 1, 0)
     render(rand)
-    next_board_state(rand)
+    counter_board = next_board_state(rand)
+    print(counter_board)
 
 
 if __name__ == '__main__':
