@@ -1,14 +1,18 @@
 import random
+import time
 
 
+# This function returns board width
 def board_width(board):
     return len(board[0])
 
 
+# This function returns board height
 def board_height(board):
     return len(board)
 
 
+# This function creates a dead board
 def dead_board(height, width):
     empty = []
     for i in range(height):
@@ -18,10 +22,12 @@ def dead_board(height, width):
     return empty
 
 
+# This function sets a specific board spot to alive
 def set_board(board, x, y):
     board[x][y] = 1
 
 
+# This function creates a board in a random state
 def rand_board(height, width):
     rand = dead_board(width, height)
     for i in range(height):
@@ -30,6 +36,7 @@ def rand_board(height, width):
     return rand
 
 
+# This function renders a board
 def render(board):
     print(" ", end="")
     for i in range(board_width(board)):
@@ -53,9 +60,11 @@ def render(board):
     print("")
 
 
+# This function up alive neighbors of each spot on a board
 def count_board_state(board):
     counter_board = dead_board(board_width(board), board_height(board))
     counter = 0
+    # Check each board for its neighbors
     for i in range(board_height(board)):
         for j in range(board_width(board)):
             # Covers all i - 1 neighbors
@@ -88,25 +97,19 @@ def count_board_state(board):
                     if board[i + 1][j + 1] == 1:
                         counter += 1
 
+            # Set each board spot to its # of alive neighbors
             counter_board[i][j] = counter
             counter = 0
 
     return counter_board
 
-    # board[i - 1][j - 1]
-    # board[i - 1][j]
-    # board[i - 1][j + 1]
 
-    # board[i][j - 1]
-    # board[i][j + 1]
-
-    # board[i + 1][j - 1]
-    # board[i + 1][j]
-    # board[i + 1][j + 1]
-
-
+# Function changes a board to its next state
 def next_board_state(board):
+    # Create counter board
     counter_board = count_board_state(board)
+
+    # Check the counter_boards values to assign next state
     for i in range(board_height(board)):
         for j in range(board_width(board)):
             if board[i][j] == 1:
@@ -118,21 +121,40 @@ def next_board_state(board):
                 board[i][j] = 1
 
 
+# Function returns false when board is alive, true otherwise
+def is_dead(board):
+    for i in range(board_height(board)):
+        for j in range(board_width(board)):
+            if board[i][j] == 1:
+                return False
+
+    return True
+
+
+# Main Function
 def main():
-    width = 5
-    height = 5
-    # rand = rand_board(width, height)
-    rand = dead_board(height, width)
-    set_board(rand, 2, 2)
-    set_board(rand, 0, 0)
-    set_board(rand, 1, 0)
+    # Asking for input
+    height = int(input("Enter a height: "))
+    while height < 1:
+        print("Invalid height")
+        height = int(input("Enter a height: "))
+    width = int(input("Enter a width: "))
+    while width < 1:
+        print("Invalid width")
+        width = int(input("Enter a width: "))
+
+    # Produce random board
+    rand = rand_board(height, width)
     render(rand)
-    next_board_state(rand)
-    next_board_state(rand)
-    render(rand)
-    print(hi)
+
+    # Keep rendering until board dies (which it might not)
+    while not is_dead(rand):
+        next_board_state(rand)
+        time.sleep(0.5)
+        render(rand)
 
 
+# Main
 if __name__ == '__main__':
     main()
 
