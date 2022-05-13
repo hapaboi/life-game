@@ -130,6 +130,7 @@ def main():
     next_board_state(rand)
     next_board_state(rand)
     render(rand)
+    print(hi)
 
 
 if __name__ == '__main__':
